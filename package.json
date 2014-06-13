@@ -1,0 +1,10 @@
+{
+  "name": "apriori",
+  "version": "0.0.1",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-qunit": "~0.5.1",
+    "grunt-contrib-watch": "~0.4.0"
+  }
+}
