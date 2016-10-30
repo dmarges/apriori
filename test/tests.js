@@ -2,14 +2,14 @@ module("Initializing Apriori object", {
     setup: function() {
         trainingSet = [
             ["test1", "test2", "test3"],
-            ["test1", "test2", "test4"]
-            /*["test3", "test6", "test1"],
-             ["test9", "test9", "test3"],
-             ["test4", "test1", "test4"],
-             ["test1", "test2", "test5"],
-             ["test8", "test1", "test2"],
-             ["test7", "test8", "test6"],
-             ["test1", "test1", "test2"]*/
+            ["test1", "test2", "test4"],
+            ["test3", "test6", "test1"],
+            ["test9", "test9", "test3"],
+            ["test4", "test1", "test4"],
+            ["test1", "test2", "test5"],
+            ["test8", "test1", "test2"],
+            ["test7", "test8", "test6"],
+            ["test1", "test1", "test2"]
         ];
 
         apriori = new Apriori(trainingSet);
@@ -25,12 +25,12 @@ module("Initializing Apriori object", {
 
     test("Create a new Apriori object without options parameter", function() {
 
-        ok(apriori, "Did not create new Apriori object");
-        ok(apriori.options.confidence === 10, "Did not set default confidence value");
-        ok(apriori.options.minValue === 2, "Did not set default minimum value for set");
-        ok(apriori.options.maxValue === 10, "Did not set default maximum value for set");
-        ok(apriori.options.minSupport === 1, "Did not set default minimum support");
-        ok(apriori.options.maxSupport === 100, "Did not set default maximum support");
+        ok(apriori, "Created new Apriori object");
+        ok(apriori.options.confidence === 10, "Default confidence value set properly");
+        ok(apriori.options.minValue === 2, "Default minimum value for set was set properly");
+        ok(apriori.options.maxValue === 10, "Default maximum value for set was set properly");
+        ok(apriori.options.minSupport === 1, "Default minimum support was set properly");
+        ok(apriori.options.maxSupport === 100, "Default maximum support set properly");
     });
 
     test("Create a new Apriori object with user supplied options argument", function() {
@@ -44,12 +44,12 @@ module("Initializing Apriori object", {
 
         apriori.initialize();
 
-        ok(apriori, "Did not create new Apriori object with user supplied options");
-        ok(apriori.options.confidence === 20, "Did not set confidence value to user supplied value");
-        ok(apriori.options.minValue === 0, "Did not set minimum value for data to user supplied value");
-        ok(apriori.options.maxValue === 50, "Did not set maximum value for data to user supplied value");
-        ok(apriori.options.minSupport === 10, "Did not set minimum support value to user supplied value");
-        ok(apriori.options.maxSupport === 90, "Did not set maximum support value to user supplied value");
+        ok(apriori, "Created new Apriori object with user supplied options");
+        ok(apriori.options.confidence === 20, "Set confidence value to user supplied value");
+        ok(apriori.options.minValue === 0, "Set minimum value for data to user supplied value");
+        ok(apriori.options.maxValue === 50, "Set maximum value for data to user supplied value");
+        ok(apriori.options.minSupport === 10, "Set minimum support value to user supplied value");
+        ok(apriori.options.maxSupport === 90, "Set maximum support value to user supplied value");
     });
 
     test("Creating a new Apriori object sets up data and structures necessary for performing calculations", function() {
@@ -60,9 +60,9 @@ module("Initializing Apriori object", {
         //Have to re-initialize for spies to find methods
         apriori.initialize();
 
-        ok(findUniqueDataItemsSpy.called, "Did not find unique data items");
-        ok(createItemSupportValueMapSpy.called, "Did not create support value map");
-        ok(parseTrainingDataSpy.called, "Did not parse training data");
+        ok(findUniqueDataItemsSpy.called, "Call was made to find unique data items");
+        ok(createItemSupportValueMapSpy.called, "Call was made to create support value map");
+        ok(parseTrainingDataSpy.called, "Call was made to parse training data");
     });
 
 module();
@@ -92,28 +92,33 @@ module("Generating candidate item sets", {
 });
 
     test("Find and store unique item values", function() {
-        ok(apriori.uniqueItems.length === 4, "Did not find unique items properly");
+        ok(apriori.uniqueItems.length === 4, "Found correct number of unique items");
+
+        for(var i = 0, len = apriori.uniqueItems.length; i < len; i++) {
+            var incNumber = i + 1;
+            ok(apriori.uniqueItems[i] === "test" + incNumber, "Unique item:" + incNumber + " is test" + incNumber);            
+        }
     });
 
     test("Construct support item map", function() {
-        ok(typeof apriori.supportMap === 'object', "Did not construct mapping object");
-        ok(apriori.supportMap["test1"], "Did not set supportMap value properly");
-        ok(apriori.supportMap["test2"], "Did not set supportMap value properly");
-        ok(apriori.supportMap["test3"], "Did not set supportMap value properly");
-        ok(apriori.supportMap["test4"], "Did not set supportMap value properly");
-    });
+        ok(typeof apriori.supportMap === 'object', "Constructed support mapping object");
 
-    test("Parsing training data will create candidates", function() {
-        ok(apriori.candidates["test1"], "Did not set candidate object properly");
-        ok(apriori.candidates["test2"], "Did not set candidate object properly");
-        ok(apriori.candidates["test3"], "Did not set candidate object properly");
+        for(item in apriori.supportMap) {
+            ok(item !== undefined, "supportMap value is set properly");
+        }
     });
 
     test("Parsing training data will calculate correct support values", function() {
-        ok(apriori.candidates["test1"] === 2, "Did not set candidate support value correctly");
-        ok(apriori.candidates["test2"] === 2, "Did not set candidate support value correctly");
-        ok(apriori.candidates["test3"] === 1, "Did not set candidate support value correctly");
-        ok(apriori.candidates["test4"] === 1, "Did not set candidate support value correctly");
+        //There should be the following:
+        //test1 = 2
+        //test2 = 2
+        //test3 = 1
+        //test4 = 1
+        
+        ok(apriori.candidates["test1"] === 2, "Candidate item 'test1' has 2 occurences");
+        ok(apriori.candidates["test2"] === 2, "Candidate item 'test2' has 2 occurences");
+        ok(apriori.candidates["test3"] === 1, "Candidate item 'test3' has 1 occurence");
+        ok(apriori.candidates["test4"] === 1, "Candidate item 'test4' has 1 occurence");
     });
 
     test("Prune candidates that fall below minimum support value", function() {
@@ -123,11 +128,11 @@ module("Generating candidate item sets", {
 
         apriori.initialize();
         apriori.pruneCandidates();
-        ok(!apriori.candidates["test3"], "Did not remove low support candidates");
-        ok(!apriori.candidates["test4"], "Did not remove low support candidates");
+        ok(!apriori.candidates["test3"], "Removed low support candidate 'test3'");
+        ok(!apriori.candidates["test4"], "Removed low support candidate 'test4'");
 
-        ok(!apriori.supportMap["test3"], "Did not remove low performing candidates from support value map");
-        ok(!apriori.supportMap["test4"], "Did not remove low performing candidates from support value map");
+        ok(!apriori.supportMap["test3"], "Removed low performing candidate 'test3' from support value map");
+        ok(!apriori.supportMap["test4"], "Removed low performing candidate 'test4' from support value map");
     });
 
 module();

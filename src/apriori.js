@@ -37,21 +37,6 @@ Apriori.prototype = {
         this.parseTrainingData();
     },
 
-    parseTrainingData: function() {
-
-        var occurrences = this.supportMap;
-        var trainingData = this.trainingData;
-
-        //For each item in every item set, we have to count how many times it appears
-        for(var itemSet = 0; itemSet < trainingData.length; itemSet++) {
-            for(var items = 0; items < trainingData[itemSet].length; items++) {
-                ++occurrences[trainingData[itemSet][items]];
-            }
-        }
-
-        this.candidates = occurrences;
-    },
-
     findUniqueDataItems: function() {
         var uniqueItems = [];
         var trainingData = this.trainingData;
@@ -78,6 +63,21 @@ Apriori.prototype = {
         }
 
         this.supportMap = supportMap;
+    },
+
+    parseTrainingData: function() {
+
+        var occurrences = this.supportMap;
+        var trainingData = this.trainingData;
+
+        //For each item in every item set, we have to count how many times it appears
+        for(var itemSet = 0; itemSet < trainingData.length; itemSet++) {
+            for(var items = 0; items < trainingData[itemSet].length; items++) {
+                ++occurrences[trainingData[itemSet][items]];
+            }
+        }
+
+        this.candidates = occurrences;
     },
 
     pruneCandidates: function() {
