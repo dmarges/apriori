@@ -2,14 +2,7 @@ module("Initializing Apriori object", {
     setup: function() {
         trainingSet = [
             ["test1", "test2", "test3"],
-            ["test1", "test2", "test4"],
-            ["test3", "test6", "test1"],
-            ["test9", "test9", "test3"],
-            ["test4", "test1", "test4"],
-            ["test1", "test2", "test5"],
-            ["test8", "test1", "test2"],
-            ["test7", "test8", "test6"],
-            ["test1", "test1", "test2"]
+            ["test1", "test2", "test4"]
         ];
 
         apriori = new Apriori(trainingSet);
@@ -72,13 +65,6 @@ module("Generating candidate item sets", {
         trainingSet = [
             ["test1", "test2", "test3"],
             ["test1", "test2", "test4"]
-            /*["test3", "test6", "test1"],
-            ["test9", "test9", "test3"],
-            ["test4", "test1", "test4"],
-            ["test1", "test2", "test5"],
-            ["test8", "test1", "test2"],
-            ["test7", "test8", "test6"],
-            ["test1", "test1", "test2"]*/
         ];
 
         apriori = new Apriori(trainingSet);
